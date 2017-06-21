@@ -37,13 +37,19 @@ new Vue({
                              <check-filter v-for="genre in genres" v-bind:filterTitle="genre"></check-filter>
                         </div>
                      </div>`,
-            components:{
+            components:{ // the checkbox component
                 'check-filter':{
+                    data(){
+                        return{
+                            checked:false
+                        }
+                    },
                     props:['filterTitle'],
-                    template:`<div class="check-filter">
+                    // if checkbox is true we have to add active class and he depend of cheched
+                    template:`<div v-bind:class="{'check-filter':true, active:checked}" v-on:click="checked = !checked">
                                 <span class="checkbox"></span>
                                 <span class="check-filter-title">{{filterTitle}}</span>
-                              </div>`
+                            </div>`
                 }
             }
        } 
