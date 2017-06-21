@@ -5,8 +5,11 @@ import genres from './util/genres'
 
 new Vue({
     el:'#app',
-    data:{
-       // msg:'asd'
+    methods:{
+        checkFilter(category, titleCh, checked){
+            console.log(category, titleCh, checked)
+            console.log('8888')
+        }
     },
     components:{ // register the components
        'movie-list':{
@@ -34,36 +37,36 @@ new Vue({
             template:`<div id="movie-filter">
                         <h2>Filter results</h2>
                         <div class="filter-group">
-                             <check-comp 
+                             <check-filter-comp 
                                 v-for="genre in genres" 
-                                v-bind:filterTitle="genre" 
+                                v-bind:FilterTitle="genre" 
                                 v-on:check-emit-name="checkFilter">
-                             </check-comp>
+                             </check-filter-comp>
                         </div>
                      </div>`,
             methods:{
-                 checkFilter(){
-                     console.log('check this')
+                 checkFilter(category,FilterTitle,checked){
+                      this.$emit('check-emit-name',category,FilterTitle,checked)
                  }
             },
                     components:{ // the checkbox component
-                        'check-comp':{
+                        'check-filter-comp':{
                             data(){
                                 return{
                                     checked:false
                                 }
                             },
-                            props:['filterTitle'],
+                            props:['FilterTitle'],
                             // if checkbox is true we have to add active class and he depend of cheched
                             template:`<div v-bind:class="{'check-filter':true, active:checked}" v-on:click="checkFilter">
                                         <span class="checkbox"></span>
-                                        <span class="check-filter-title">{{filterTitle}}</span>
+                                        <span class="check-filter-title">{{FilterTitle}}</span>
                                     </div>`,
                             // emit event form checkbox component to parent movie filter
                             methods:{
                                 checkFilter(){
                                     this.checked = !this.checked
-                                    this.$emit('check-emit-name')
+                                    this.$emit('check-emit-name','genre', this.FilterTitle, this.checked) // (name of event, the category, the genre title , the state)
                                 }
                             }
                         }
